@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args) {
-        Connection connection = ConnexionDB.getConnection();
+        Connection connection = PersistanceSQL.getConnection();
         if (connection != null) {
             try {
                 // Création de l'objet Statement
@@ -30,7 +30,7 @@ public class Main {
                 // Fermeture des ressources
                 resultSet.close();
                 statement.close();
-                ConnexionDB.closeConnection(connection);
+                PersistanceSQL.closeConnection(connection);
             } catch (SQLException e) {
                 System.err.println("Erreur lors de l'exécution de la requête : " + e.getMessage());
             }

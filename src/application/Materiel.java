@@ -1,5 +1,9 @@
 package application;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 public class Materiel {
@@ -50,12 +54,29 @@ public class Materiel {
         this.leType = leType;
     }
 
-    public Materiel(int numSerie, Date dateVente, float prixVente, String emplacement, TypeMateriel leType) {
-        this.numSerie = numSerie;
-        this.dateVente = dateVente;
-        this.prixVente = prixVente;
-        this.emplacement = emplacement;
-        this.leType = leType;
-    }
 
-}
+
+    public Materiel(int numSerie) {
+
+        Connection connection = PersistanceSQL.getConnection();
+        if (connection != null) {
+            try {
+                // Création de l'objet Statement
+                Statement statement = connection.createStatement();
+
+                // Exécution de la requête SQL
+                String query = "SELECT * FROM materiel WHERE  num_serie = " + numSerie;
+                ResultSet resultSet = statement.executeQuery(query);
+
+                this.numSerie = numSerie;
+                this.dateVente = resultSet.getDate("date_vente");
+                this.prixVente = resultSet.getFloat("prix_vente");
+                this.emplacement = resultSet.getString("emplacement");
+                this.leType = leType;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
+    }

@@ -1,19 +1,23 @@
 package application;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Client {
 
-    private String numClient, raisonSociale, siren, codeApe, adresse, telClient, email;
-    private int dureeDeplacement, distanceKm;
+    private String raisonSociale, siren, codeApe, adresse, telClient, email;
+    private int numClient, dureeDeplacement, distanceKm;
     private ArrayList<Materiel> lesMateriels;
     private ContratMaintenance leContrat;
 
-    public String getNumClient() {
+    public int getNumClient() {
         return numClient;
     }
 
-    public void setNumClient(String numClient) {
+    public void setNumClient(int numClient) {
         this.numClient = numClient;
     }
 
@@ -97,17 +101,40 @@ public class Client {
         this.leContrat = leContrat;
     }
 
-    public Client(String numClient, String raisonSociale, String siren, String codeApe, String adresse, String telClient, String email, int dureeDeplacement, int distanceKm, ArrayList<Materiel> lesMateriels, ContratMaintenance leContrat) {
-        this.numClient = numClient;
-        this.raisonSociale = raisonSociale;
-        this.siren = siren;
-        this.codeApe = codeApe;
-        this.adresse = adresse;
-        this.telClient = telClient;
-        this.email = email;
-        this.dureeDeplacement = dureeDeplacement;
-        this.distanceKm = distanceKm;
-        this.lesMateriels = lesMateriels;
-        this.leContrat = leContrat;
+    public Client(int numClient) {
+
+        Connection connection = PersistanceSQL.getConnection();
+        if (connection != null) {
+            try {
+                // Création de l'objet Statement
+                Statement statement = connection.createStatement();
+
+                // Exécution de la requête SQL
+                String query = "SELECT * FROM client WHERE  num_client = " + numClient;
+                ResultSet resultSet = statement.executeQuery(query);
+
+                this.numClient = numClient;
+                this.raisonSociale = resultSet.getString("raison_sociale");
+                this.siren = resultSet.getString("num_siren");
+                this.codeApe = resultSet.getString("code_ape");
+                this.adresse = resultSet.getString("adresse");
+                this.telClient = resultSet.getString("num_tel");
+                this.email = resultSet.getString("courriel");
+                this.dureeDeplacement = resultSet.getInt("duree_moy_deplacement");
+                this.distanceKm = resultSet.getInt("dist_agence_km");
+
+
+                query = "SELECT * FROM materiel WHERE  num_client = " + numClient;
+                resultSet = statement.executeQuery(query);
+
+                this.lesMateriels = lesMateriels;
+                this.leContrat = leContrat;
+
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 }

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE materiels SYSTEM './materiels.dtd'>
+<materiels idClient='1'>
+<sousContrat>
+</sousContrat>
+</materiels>

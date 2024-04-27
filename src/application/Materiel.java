@@ -9,7 +9,7 @@ import java.util.Date;
 public class Materiel {
 
     private int numSerie;
-    private Date dateVente;
+    private Date dateVente, dateInstallation;
     private float prixVente;
     private String emplacement;
     private TypeMateriel leType;
@@ -29,6 +29,10 @@ public class Materiel {
     public void setDateVente(Date dateVente) {
         this.dateVente = dateVente;
     }
+
+    public Date getDateInstallation() { return dateInstallation; }
+
+    public void setDateInstallation(Date dateInstallation) { this.dateInstallation = dateInstallation; }
 
     public float getPrixVente() {
         return prixVente;
@@ -56,7 +60,7 @@ public class Materiel {
 
 
 
-    public Materiel(int numSerie) {
+    public Materiel(int numSerie, TypeMateriel leType) {
 
         Connection connection = PersistanceSQL.getConnection();
         if (connection != null) {
@@ -71,6 +75,7 @@ public class Materiel {
                 this.numSerie = numSerie;
                 this.dateVente = resultSet.getDate("date_vente");
                 this.prixVente = resultSet.getFloat("prix_vente");
+                this.dateInstallation = resultSet.getDate("date_installation");
                 this.emplacement = resultSet.getString("emplacement");
                 this.leType = leType;
             } catch (SQLException e) {
@@ -79,4 +84,19 @@ public class Materiel {
 
         }
     }
+
+
+    public String xmlMateriel() {
+        String chaine = "";
+        chaine += "<materiel numSerie='" + this.numSerie + "' >" + '\n';
+        chaine += "<type refInterne='" + this.leType.getReferenceInterne() + "' libelle ='" + this.leType.getLibelleTypeMateriel() + "' />" + '\n';
+        chaine += "<date_vente>" + this.dateVente + "</date_vente>" + '\n';
+        chaine += "<date_installation>" + this.dateInstallation + "</date_installation>" + '\n';
+        chaine += "<prix_vente>" + this.prixVente + "</prix_vente>" + '\n';
+        chaine += "<emplacement>" + this.emplacement + "</emplacement>" + '\n';
+        chaine += "<nbJourAvantEcheance>" +  + "</nbJourAvantEcheance>";
+
+        return chaine;
+    }
+
     }

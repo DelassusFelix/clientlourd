@@ -101,7 +101,7 @@ public class Client {
         this.leContrat = leContrat;
     }
 
-    public Client(int numClient) {
+    public Client(int numClient, ArrayList<Materiel> allMateriels, ArrayList<ContratMaintenance> allContrats) {
 
         Connection connection = PersistanceSQL.getConnection();
         if (connection != null) {
@@ -123,13 +123,26 @@ public class Client {
                 this.dureeDeplacement = resultSet.getInt("duree_moy_deplacement");
                 this.distanceKm = resultSet.getInt("dist_agence_km");
 
-
-                query = "SELECT * FROM materiel WHERE  num_client = " + numClient;
+                query = "SELECT num_serie FROM materiel WHERE  num_client = " + numClient;
                 resultSet = statement.executeQuery(query);
 
-                this.lesMateriels = lesMateriels;
-                this.leContrat = leContrat;
+                while (resultSet.next()) {
+                    for (Materiel materiel : allMateriels) {
+                        if (materiel.getNumSerie() == resultSet.getInt("num_serie")){
+                            this.lesMateriels.add(materiel);
+                        }
+                    }
+                }
 
+                query = "SELECT num_contrat FROM contrat_maintenance WHERE num_client = " + numClient;
+                resultSet = statement.executeQuery(query);
+
+                for (ContratMaintenance contrat : allContrats) {
+                    if (contrat.getNumContrat() == resultSet.getInt("num_contrat")){
+                        this.leContrat = contrat;
+                        break;
+                    }
+                }
 
             } catch (SQLException e) {
                 throw new RuntimeException(e);

@@ -101,53 +101,32 @@ public class Client {
         this.leContrat = leContrat;
     }
 
-    public Client(int numClient, ArrayList<Materiel> allMateriels, ArrayList<ContratMaintenance> allContrats) {
-
-        Connection connection = PersistanceSQL.getConnection();
-        if (connection != null) {
-            try {
-                // Création de l'objet Statement
-                Statement statement = connection.createStatement();
-
-                // Exécution de la requête SQL
-                String query = "SELECT * FROM client WHERE  num_client = " + numClient;
-                ResultSet resultSet = statement.executeQuery(query);
-
-                this.numClient = numClient;
-                this.raisonSociale = resultSet.getString("raison_sociale");
-                this.siren = resultSet.getString("num_siren");
-                this.codeApe = resultSet.getString("code_ape");
-                this.adresse = resultSet.getString("adresse");
-                this.telClient = resultSet.getString("num_tel");
-                this.email = resultSet.getString("courriel");
-                this.dureeDeplacement = resultSet.getInt("duree_moy_deplacement");
-                this.distanceKm = resultSet.getInt("dist_agence_km");
-
-                query = "SELECT num_serie FROM materiel WHERE  num_client = " + numClient;
-                resultSet = statement.executeQuery(query);
-
-                while (resultSet.next()) {
-                    for (Materiel materiel : allMateriels) {
-                        if (materiel.getNumSerie() == resultSet.getInt("num_serie")){
-                            this.lesMateriels.add(materiel);
-                        }
-                    }
-                }
-
-                query = "SELECT num_contrat FROM contrat_maintenance WHERE num_client = " + numClient;
-                resultSet = statement.executeQuery(query);
-
-                for (ContratMaintenance contrat : allContrats) {
-                    if (contrat.getNumContrat() == resultSet.getInt("num_contrat")){
-                        this.leContrat = contrat;
-                        break;
-                    }
-                }
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
+    public Client(int numClient, String raisonSociale, String siren, String codeApe, String adresse, String telClient, String email, int dureeDeplacement, int distanceKm, ArrayList<Materiel> lesMateriels, ContratMaintenance leContrat) {
+        this.numClient = numClient;
+        this.raisonSociale = raisonSociale;
+        this.siren = siren;
+        this.codeApe = codeApe;
+        this.adresse = adresse;
+        this.telClient = telClient;
+        this.email = email;
+        this.dureeDeplacement = dureeDeplacement;
+        this.distanceKm = distanceKm;
+        this.lesMateriels = lesMateriels;
+        this.leContrat = leContrat;
     }
+
+    public boolean estAssure() {
+        return leContrat.estValide();
+    }
+
+    public ArrayList<Materiel> getMaterielsSousContrat() {
+        if (this.estAssure()) {
+            return leContrat.getLesMaterielsAssures();
+        }else {
+            return new ArrayList<Materiel>();
+        }
+    }
+
+
+
 }

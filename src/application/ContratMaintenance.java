@@ -47,38 +47,13 @@ public class ContratMaintenance {
         this.lesMaterielsAssures = lesMaterielsAssures;
     }
 
-    public ContratMaintenance(String numContrat, ArrayList<Materiel> allMateriels) {
-
-        Connection connection = PersistanceSQL.getConnection();
-        if (connection != null) {
-            try {
-                // Création de l'objet Statement
-                Statement statement = connection.createStatement();
-
-                // Exécution de la requête SQL
-                String query = "SELECT * FROM contrat_maintenance WHERE  num_contrat = " + numContrat;
-                ResultSet resultSet = statement.executeQuery(query);
-
-                this.numContrat = resultSet.getInt("num_contrat");
-                this.dateSignature = resultSet.getDate("date_signature");
-                this.dateEcheance = resultSet.getDate("date_echeance");
-
-                query = "SELECT num_serie FROM materiel WHERE  num_contrat = " + numContrat;
-                resultSet = statement.executeQuery(query);
-
-                while (resultSet.next()) {
-                    for (Materiel materiel : allMateriels) {
-                        if (materiel.getNumSerie() == resultSet.getInt("num_serie")){
-                            this.lesMaterielsAssures.add(materiel);
-                        }
-                    }
-                }
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public ContratMaintenance(int numContrat, Date dateSignature, Date dateEcheance, ArrayList<Materiel> lesMaterielsAssures) {
+        this.numContrat = numContrat;
+        this.dateSignature = dateSignature;
+        this.dateEcheance = dateEcheance;
+        this.lesMaterielsAssures = lesMaterielsAssures;
     }
+
 
 
     public boolean estValide() {
@@ -111,7 +86,7 @@ public class ContratMaintenance {
     public void ajouteMateriel(Materiel unMateriel) {
         // Comparer la date de signature avec la date d'installation du matériel
         if (dateSignature.before(unMateriel.getDateInstallation())) {
-            lesMaterielsAssures.add(unMateriel); // Ajouter le matériel à la collection
+            lesMaterielsAssures.add(unMateriel);
             System.out.println("Matériel ajouté : " + unMateriel.getNumSerie());
         } else {
             System.out.println("Matériel non ajouté. La date de signature doit être antérieure à la date d'installation.");

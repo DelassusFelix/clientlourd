@@ -1,50 +1,159 @@
 package application;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class PersistanceSQL {
-    // Informations de connexion à la base de données
-    private static final String URL = "jdbc:mysql://localhost:3306/cashcash";
-    private static final String USER = "root";
-    private static final String PASSWORD = "YDmKqC4HIAWuYORZzFX1";
+    private Connection connection;
 
-    // Méthode pour établir la connexion à la base de données
-    public static Connection getConnection() {
-        Connection connection = null;
+    public PersistanceSQL() {
+        // Construire la chaîne de connexion
+        String connectionString = "jdbc:mysql://127.0.0.1:3306/cashcash";
         try {
-            // Enregistrement du pilote JDBC
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Etablissement de la connexion
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connexion à la base de données réussie !");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Erreur lors du chargement du pilote JDBC : " + e.getMessage());
+            // Initialiser la connexion à la base de données
+            connection = DriverManager.getConnection(connectionString, "root", "YDmKqC4HIAWuYORZzFX1");
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la connexion à la base de données : " + e.getMessage());
+            throw new RuntimeException("Erreur lors de la connexion à la base de données", e);
         }
-        return connection;
     }
 
-    // Méthode pour fermer la connexion à la base de données
-    public static void closeConnection(Connection connection) {
-        if (connection != null) {
-            try {
-                connection.close();
-                System.out.println("Connexion à la base de données fermée avec succès !");
-            } catch (SQLException e) {
-                System.err.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());
+    /*public void RangerDansBase(Object unObjet) {
+        // Implémentez ici la logique pour stocker l'objet dans la base de données
+        try {
+            // Exemple : insérer des données dans une table (ajuster selon votre schéma)
+            Statement statement = connection.prepareStatement("INSERT INTO table (champ1, champ2) VALUES (?, ?)");
+            // Définissez les valeurs à partir des propriétés de l'objet
+            statement.setString(1, "valeur1");
+            statement.setString(2, "valeur2");
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors du stockage dans la base de données", e);
+        }
+    }*/
+
+    public Object ChargerDepuisBase(String id, String nomClasse) {
+        String nomTable = "";
+        String clePrimaire = "";
+        switch (nomClasse) {
+            case "Client" -> {
+                nomTable = "client";
+                clePrimaire = "id_client";
+            }
+            case "ContratMaintenance" -> {
+                nomTable = "contrat_maintenance";
+                clePrimaire = "num_contrat";
+            }
+            case "Famille" -> {
+                nomTable = "famille";
+                clePrimaire = "id";
+            }
+            case "Materiel" -> {
+                nomTable = "materiel";
+                clePrimaire = "num_serie";
+            }
+            case "TypeMateriel" -> {
+                nomTable = "type";
+                clePrimaire = "ref_interne";
             }
         }
-    }
 
-    // Exemple d'utilisation
-    public static void main(String[] args) {
-        Connection connection = getConnection();
-        // Utiliser la connexion pour exécuter des requêtes, etc.
-        // N'oublie pas de fermer la connexion une fois que tu as fini avec elle
-        closeConnection(connection);
+        try {
+            // Exemple : sélectionnez des données en fonction de l'ID et de la classe (ajuster selon votre schéma)
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT * FROM " + nomTable + " WHERE " + clePrimaire + " = " + id;
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+
+                // Création d'un objet Famille
+                if (nomClasse.toLowerCase() == "famille") {
+                    // récupération des informations de la famille à créer
+                    int idFamille = resultSet.getInt("id");
+                    String libelleFamille = resultSet.getString("libelle");
+
+                    // création de la famille
+                    Famille laFamille = new Famille(idFamille, libelleFamille);
+                    return laFamille;
+                }
+
+                // Création d'un objet TypeMateriel
+                if (nomClasse.toLowerCase() == "typemateriel") {
+                    // récupération des informations du type à créer
+                    String referenceInterne = resultSet.getString("ref_interne");
+                    String libelleType = resultSet.getString("libelle");
+
+                    // récupération de l'id de la famille associé au type
+                    String idFamille = String.valueOf(resultSet.getInt("famille"));
+                    // création de la famille associée au type
+                    Famille laFamille = (Famille) ChargerDepuisBase(idFamille, "Famille");
+
+                    // création du type
+                    TypeMateriel leType = new TypeMateriel(referenceInterne, libelleType, laFamille);
+                    return leType;
+                 }
+
+                // Création d'un objet Materiel
+                if (nomClasse.toLowerCase() == "materiel") {
+                    // récupération des infos du materiel à créer
+                    int numSerie = resultSet.getInt("num_serie");
+                    Date dateVente = resultSet.getDate("date_vente");
+                    Date dateInstallation = resultSet.getDate("date_installation");
+                    float prixVente = resultSet.getFloat("prix_vente");
+                    String emplacement = resultSet.getString("emplacement");
+
+                    // récupération de l'id du type associé au materiel
+                    String idType = resultSet.getString("ref_interne");
+                    // création du type associé au materiel
+                    TypeMateriel leType = (TypeMateriel) ChargerDepuisBase(idType, "TypeMateriel");
+
+                    // création du materiel
+                    Materiel leMateriel = new Materiel(numSerie, dateVente, dateInstallation, prixVente, emplacement, leType);
+                    return leMateriel;
+                }
+
+                //création d'un objet ContratMaintenance
+                if (nomClasse.toLowerCase() == "contratmaintenance") {
+                    // récupération des infos du contrat à créer
+                    int numContrat = resultSet.getInt("num_contrat");
+                    Date dateSignature = resultSet.getDate("date_signature");
+                    Date dateEcheance = resultSet.getDate("date_echeance");
+
+                    // récupération de la liste des materiels assurés
+                    String queryMaterielsAssures = "SELECT * FROM materiel WHERE num_contrat = " + numContrat;
+                    ResultSet resultMaterielsAssures = statement.executeQuery(queryMaterielsAssures);
+                    ArrayList<Materiel> lesMaterielsAssures = new ArrayList<Materiel>();
+
+                    while (resultMaterielsAssures.next()) {
+                        String idMateriel = String.valueOf(resultMaterielsAssures.getInt("num_serie"));
+                        Materiel leMaterielAssure = (Materiel) ChargerDepuisBase(idMateriel, "materiel");
+                        lesMaterielsAssures.add(leMaterielAssure);
+                    }
+
+                    // création du contrat
+                    ContratMaintenance leContrat = new ContratMaintenance(numContrat, dateSignature, dateEcheance, lesMaterielsAssures);
+                    return leContrat;
+                }
+
+                // création d'un objet Client
+                if (nomClasse.toLowerCase() == "client") {
+                    // récupération des infos du client à créer
+                    int numClient = resultSet.getInt("num_client");
+                    String raisonSociale = resultSet.getString("raison_sociale");
+                    String siren = resultSet.getString("num_siren");
+                    String codeApe = resultSet.getString("code_ape");
+                    String telephone = resultSet.getString("num_tel");
+                    String email = resultSet.getString("courriel");
+                    int dureeDeplacement = resultSet.getInt("duree_moy_deplacement");
+                    int distanceKm = resultSet.getInt("dist_agence_km");
+                    
+                }
+
+            } else {
+                throw new RuntimeException("Aucun objet trouvé pour cet identifiant");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors du chargement depuis la base de données", e);
+        }
     }
 }

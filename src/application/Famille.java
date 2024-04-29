@@ -7,8 +7,9 @@ import java.sql.Statement;
 
 public class Famille {
 
-    private String libelleFamille;
     private int codeFamille;
+    private String libelleFamille;
+
 
     public int getCodeFamille() {
         return codeFamille;
@@ -26,26 +27,8 @@ public class Famille {
         this.libelleFamille = libelleFamille;
     }
 
-
-    public Famille(int idFamille) {
-
-        Connection connection = PersistanceSQL.getConnection();
-        if (connection != null) {
-            try {
-                // Création de l'objet Statement
-                Statement statement = connection.createStatement();
-
-                // Exécution de la requête SQL
-                String query = "SELECT * FROM famille WHERE  id = " + idFamille;
-                ResultSet resultSet = statement.executeQuery(query);
-
-                this.codeFamille = resultSet.getInt("id");
-                this.libelleFamille = resultSet.getString("libelle");
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
+    public Famille(int codeFamille, String libelleFamille) {
+        this.codeFamille = codeFamille;
+        this.libelleFamille = libelleFamille;
     }
 }

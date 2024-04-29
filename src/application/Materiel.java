@@ -59,34 +59,16 @@ public class Materiel {
     }
 
 
-
-    public Materiel(int numSerie, TypeMateriel leType) {
-
-        Connection connection = PersistanceSQL.getConnection();
-        if (connection != null) {
-            try {
-                // Création de l'objet Statement
-                Statement statement = connection.createStatement();
-
-                // Exécution de la requête SQL
-                String query = "SELECT * FROM materiel WHERE  num_serie = " + numSerie;
-                ResultSet resultSet = statement.executeQuery(query);
-
-                this.numSerie = numSerie;
-                this.dateVente = resultSet.getDate("date_vente");
-                this.prixVente = resultSet.getFloat("prix_vente");
-                this.dateInstallation = resultSet.getDate("date_installation");
-                this.emplacement = resultSet.getString("emplacement");
-                this.leType = leType;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
+    public Materiel(int numSerie, Date dateVente, Date dateInstallation, float prixVente, String emplacement, TypeMateriel leType) {
+        this.numSerie = numSerie;
+        this.dateVente = dateVente;
+        this.dateInstallation = dateInstallation;
+        this.prixVente = prixVente;
+        this.emplacement = emplacement;
+        this.leType = leType;
     }
 
-
-    public String xmlMateriel() {
+    public String xmlMateriel(ContratMaintenance leContrat) {
         String chaine = "";
         chaine += "<materiel numSerie='" + this.numSerie + "' >" + '\n';
         chaine += "<type refInterne='" + this.leType.getReferenceInterne() + "' libelle ='" + this.leType.getLibelleTypeMateriel() + "' />" + '\n';
@@ -94,7 +76,8 @@ public class Materiel {
         chaine += "<date_installation>" + this.dateInstallation + "</date_installation>" + '\n';
         chaine += "<prix_vente>" + this.prixVente + "</prix_vente>" + '\n';
         chaine += "<emplacement>" + this.emplacement + "</emplacement>" + '\n';
-        chaine += "<nbJourAvantEcheance>" +  + "</nbJourAvantEcheance>";
+        chaine += "<nbJourAvantEcheance>" + leContrat.getJoursRestants() + "</nbJourAvantEcheance>" + '\n';
+        chaine += "</materiel>";
 
         return chaine;
     }

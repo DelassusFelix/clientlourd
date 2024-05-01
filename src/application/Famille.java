@@ -7,15 +7,15 @@ import java.sql.Statement;
 
 public class Famille {
 
-    private int codeFamille;
-    private String libelleFamille;
+
+    private String libelleFamille, codeFamille;
 
 
-    public int getCodeFamille() {
+    public String getCodeFamille() {
         return codeFamille;
     }
 
-    public void setCodeFamille(int codeFamille) {
+    public void setCodeFamille(String codeFamille) {
         this.codeFamille = codeFamille;
     }
 
@@ -27,7 +27,7 @@ public class Famille {
         this.libelleFamille = libelleFamille;
     }
 
-    public Famille(int codeFamille, String libelleFamille) {
+    public Famille(String codeFamille, String libelleFamille) {
         this.codeFamille = codeFamille;
         this.libelleFamille = libelleFamille;
     }

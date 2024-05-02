@@ -69,6 +69,7 @@ public class Materiel {
     }
 
     public String xmlMateriel(ContratMaintenance leContrat) {
+
         String chaine = "";
         chaine += "<materiel numSerie='" + this.numSerie + "' >" + '\n';
         chaine += "<type refInterne='" + this.leType.getReferenceInterne() + "' libelle ='" + this.leType.getLibelleTypeMateriel() + "' />" + '\n';
@@ -77,7 +78,21 @@ public class Materiel {
         chaine += "<prix_vente>" + this.prixVente + "</prix_vente>" + '\n';
         chaine += "<emplacement>" + this.emplacement + "</emplacement>" + '\n';
         chaine += "<nbJourAvantEcheance>" + leContrat.getJoursRestants() + "</nbJourAvantEcheance>" + '\n';
-        chaine += "</materiel>";
+        chaine += "</materiel>\n";
+
+        return chaine;
+    }
+
+    public String xmlMateriel() {
+
+        String chaine = "";
+        chaine += "<materiel numSerie='" + this.numSerie + "' >" + '\n';
+        chaine += "<type refInterne='" + this.leType.getReferenceInterne() + "' libelle ='" + this.leType.getLibelleTypeMateriel() + "' />" + '\n';
+        chaine += "<date_vente>" + this.dateVente + "</date_vente>" + '\n';
+        chaine += "<date_installation>" + this.dateInstallation + "</date_installation>" + '\n';
+        chaine += "<prix_vente>" + this.prixVente + "</prix_vente>" + '\n';
+        chaine += "<emplacement>" + this.emplacement + "</emplacement>" + '\n';
+        chaine += "</materiel>\n";
 
         return chaine;
     }

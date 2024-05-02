@@ -120,13 +120,25 @@ public class Client {
     }
 
     public ArrayList<Materiel> getMaterielsSousContrat() {
-        if (this.estAssure()) {
             return leContrat.getLesMaterielsAssures();
-        }else {
-            return new ArrayList<Materiel>();
-        }
     }
 
+    public ArrayList<Materiel> getMaterielsHorsContrat() {
+        ArrayList<Materiel> lesMaterielsHorsContrat = new ArrayList<Materiel>();
+        ArrayList<Materiel> lesMaterielsAssures = this.getMaterielsSousContrat();
+        for (Materiel materiel : lesMateriels) {
+            boolean isAssure = false;
+            for (Materiel materielAssure : lesMaterielsAssures){
+                if (materiel.getNumSerie() == materielAssure.getNumSerie()) {
+                    isAssure = true;
+                }
+            }
+            if (!isAssure) {
+                lesMaterielsHorsContrat.add(materiel);
+            }
+        }
+        return lesMaterielsHorsContrat;
+    }
 
 
 }

@@ -120,7 +120,6 @@ public class PersistanceSQL {
             Statement statement = connection.createStatement();
 
             String query = "SELECT * FROM " + nomTable + " WHERE " + clePrimaire + " = " + id;
-            System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
 
             if (resultSet.next()) {

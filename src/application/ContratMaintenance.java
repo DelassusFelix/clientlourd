@@ -57,29 +57,15 @@ public class ContratMaintenance {
 
 
     public boolean estValide() {
-        // Obtenir la date actuelle au format LocalDate
-        LocalDate today = LocalDate.now();
-
-        // Convertir dateSignature et dateEcheance en LocalDate
-        LocalDate signature = this.dateSignature.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate echeance = this.dateEcheance.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        // Retourner true si la date actuelle est entre la date de signature et la date d'échéance
-        return !today.isBefore(signature) && !today.isAfter(echeance);
+        Date today = new Date(); // Date actuelle
+        return today.after(dateSignature) && today.before(dateEcheance);
     }
 
 
     public int getJoursRestants() {
-        // Convertir la date d'échéance en LocalDate
-        LocalDate dateEcheanceLocal = this.dateEcheance.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-
-        // Obtenir la date actuelle au format LocalDate
-        LocalDate today = LocalDate.now();
-
-        // Calculer le nombre de jours entre aujourd'hui et la date d'échéance
-        return (int) ChronoUnit.DAYS.between(today, dateEcheanceLocal);
+        long diffInMillis = dateEcheance.getTime() - new Date().getTime();
+        long diffInDays = diffInMillis / (1000 * 60 * 60 * 24);
+        return (int) diffInDays;
     }
 
 

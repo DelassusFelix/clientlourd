@@ -12,12 +12,11 @@ public class Main {
 
         PersistanceSQL connection = new PersistanceSQL();
         Client leClient = (Client) connection.ChargerDepuisBase(1, "Client");
-        System.out.println(leClient.getRaisonSociale());
+        GestionMateriels gestion = new GestionMateriels(connection);
 
 
-
-        //ContratMaintenance leContrat = (ContratMaintenance) connection.ChargerDepuisBase(10, "ContratMaintenance");
-        //System.out.println(leContrat.getDateSignature());
+        String xml = gestion.XmlClient(leClient);
+        System.out.println(xml);
 
     }
 

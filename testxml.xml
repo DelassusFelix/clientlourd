@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE listeMateriel SYSTEM "materiels.dtd">
+<listeMateriel>
+<materiels idClient="1" >
+<sousContrat>
+<materiel numSerie='1061' >
+<type refInterne='PCA01' libelle ='Petite Caisse' />
+
+<famille codeFamille='TP' libelle='Terminaux Point de Vente' />
+<date_vente>2022-01-01</date_vente>
+<date_installation>2022-01-10</date_installation>
+<prix_vente>200.0</prix_vente>
+<emplacement>Caisse principale</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1062' >
+<type refInterne='CIA01' libelle ='Caisse Intel Atom' />
+
+<famille codeFamille='TP' libelle='Terminaux Point de Vente' />
+<date_vente>2022-01-05</date_vente>
+<date_installation>2022-01-15</date_installation>
+<prix_vente>300.0</prix_vente>
+<emplacement>Stock</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1063' >
+<type refInterne='LCO01' libelle ='Lecteur de Codes-Barres' />
+
+<famille codeFamille='PV' libelle='Périphériques de Vente au Détail' />
+<date_vente>2022-01-10</date_vente>
+<date_installation>2022-01-20</date_installation>
+<prix_vente>150.0</prix_vente>
+<emplacement>Caisse secondaire</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1064' >
+<type refInterne='LCB01' libelle ='Lecteur de Cartes Bancaires' />
+
+<famille codeFamille='PV' libelle='Périphériques de Vente au Détail' />
+<date_vente>2022-01-15</date_vente>
+<date_installation>2022-01-25</date_installation>
+<prix_vente>100.0</prix_vente>
+<emplacement>Salle de pause</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1065' >
+<type refInterne='IPR01' libelle ='Imprimante de Reçus' />
+
+<famille codeFamille='PV' libelle='Périphériques de Vente au Détail' />
+<date_vente>2022-01-20</date_vente>
+<date_installation>2022-01-30</date_installation>
+<prix_vente>250.0</prix_vente>
+<emplacement>Entrée</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1066' >
+<type refInterne='CRN01' libelle ='Carte Réseau' />
+
+<famille codeFamille='RN' libelle='Équipement Réseau' />
+<date_vente>2022-01-25</date_vente>
+<date_installation>2022-02-05</date_installation>
+<prix_vente>350.0</prix_vente>
+<emplacement>Bureau</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1067' >
+<type refInterne='SRV01' libelle ='Serveur de Gestion des Ventes' />
+
+<famille codeFamille='SR' libelle='Serveurs' />
+<date_vente>2022-01-30</date_vente>
+<date_installation>2022-02-10</date_installation>
+<prix_vente>400.0</prix_vente>
+<emplacement>Salle technique</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1068' >
+<type refInterne='TPE01' libelle ='Terminal de Paiement Électronique (TPE)' />
+
+<famille codeFamille='PE' libelle='Appareils de Paiement Électronique' />
+<date_vente>2022-02-05</date_vente>
+<date_installation>2022-02-15</date_installation>
+<prix_vente>450.0</prix_vente>
+<emplacement>Caisse 3</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1069' >
+<type refInterne='RTE01' libelle ='Routeur/Commutateur' />
+
+<famille codeFamille='RN' libelle='Équipement Réseau' />
+<date_vente>2022-02-10</date_vente>
+<date_installation>2022-02-20</date_installation>
+<prix_vente>500.0</prix_vente>
+<emplacement>Salle principale</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+<materiel numSerie='1070' >
+<type refInterne='PAS01' libelle ='Point Accès Sans Fil' />
+
+<famille codeFamille='RN' libelle='Équipement Réseau' />
+<date_vente>2022-02-15</date_vente>
+<date_installation>2022-02-25</date_installation>
+<prix_vente>550.0</prix_vente>
+<emplacement>Point accès</emplacement>
+<nbJourAvantEcheance>953</nbJourAvantEcheance>
+</materiel>
+</sousContrat>
+<horsContrat>
+</horsContrat>
+</materiels>
+</listeMateriel>

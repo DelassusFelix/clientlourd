@@ -72,7 +72,8 @@ public class Materiel {
 
         String chaine = "";
         chaine += "<materiel numSerie='" + this.numSerie + "' >" + '\n';
-        chaine += "<type refInterne='" + this.leType.getReferenceInterne() + "' libelle ='" + this.leType.getLibelleTypeMateriel() + "' />" + '\n';
+        chaine += "<type refInterne='" + this.leType.getReferenceInterne() + "' libelle ='" + this.leType.getLibelleTypeMateriel() + "' />" + '\n' + '\n';
+        chaine += "<famille codeFamille='" + this.leType.getLaFamille().getCodeFamille() + "' libelle='" + this.leType.getLaFamille().getLibelleFamille() + "' />\n";
         chaine += "<date_vente>" + this.dateVente + "</date_vente>" + '\n';
         chaine += "<date_installation>" + this.dateInstallation + "</date_installation>" + '\n';
         chaine += "<prix_vente>" + this.prixVente + "</prix_vente>" + '\n';
@@ -87,7 +88,8 @@ public class Materiel {
 
         String chaine = "";
         chaine += "<materiel numSerie='" + this.numSerie + "' >" + '\n';
-        chaine += "<type refInterne='" + this.leType.getReferenceInterne() + "' libelle ='" + this.leType.getLibelleTypeMateriel() + "' />" + '\n';
+        chaine += "<type refInterne='" + this.leType.getReferenceInterne() + "' libelle ='" + this.leType.getLibelleTypeMateriel() + "' />" + '\n' + '\n';
+        chaine += "<famille codeFamille='" + this.leType.getLaFamille().getCodeFamille() + "' libelle='" + this.leType.getLaFamille().getLibelleFamille() + "' />\n";
         chaine += "<date_vente>" + this.dateVente + "</date_vente>" + '\n';
         chaine += "<date_installation>" + this.dateInstallation + "</date_installation>" + '\n';
         chaine += "<prix_vente>" + this.prixVente + "</prix_vente>" + '\n';

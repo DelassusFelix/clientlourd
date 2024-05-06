@@ -2,6 +2,7 @@ package application;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PersistanceSQL {
     private Connection connection;
@@ -217,6 +218,20 @@ public class PersistanceSQL {
         }
     }
 
+
+    public HashMap getUsers() throws SQLException {
+
+        HashMap<String, String> users = new HashMap<>();
+
+        Statement statement = connection.createStatement();
+        String query = "SELECT * FROM assistant";
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while(resultSet.next()){
+            users.put(resultSet.getString("matricule"), resultSet.getString("passwordClientLourd"));
+        }
+        return users;
+    }
 
 
 }

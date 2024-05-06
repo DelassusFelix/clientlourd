@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.time.LocalDate;
@@ -57,15 +60,42 @@ public class ContratMaintenance {
 
 
     public boolean estValide() {
-        Date today = new Date(); // Date actuelle
-        return today.after(dateSignature) && today.before(dateEcheance);
+        if (dateEcheance.compareTo(dateSignature) >= 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
     public int getJoursRestants() {
-        long diffInMillis = dateEcheance.getTime() - new Date().getTime();
-        long diffInDays = diffInMillis / (1000 * 60 * 60 * 24);
-        return (int) diffInDays;
+        // Obtenir la date actuelle au format Date
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // Changer le format selon votre besoin
+        String dateAujdCalcul = dateFormat.format(new Date());
+
+        // Obtenir la date d'échéance sous forme de chaîne
+        String dateEcheanceCalcul = dateFormat.format(this.dateEcheance);
+
+        try {
+            // Convertir les chaînes de caractères en objets Date
+            Date dateAujd = dateFormat.parse(dateAujdCalcul);
+            Date dateEcheance = dateFormat.parse(dateEcheanceCalcul);
+
+            // Convertir les objets Date en LocalDate
+            LocalDate localDateAujd = LocalDate.ofInstant(dateAujd.toInstant(), java.time.ZoneId.systemDefault());
+            LocalDate localDateEcheance = LocalDate.ofInstant(dateEcheance.toInstant(), java.time.ZoneId.systemDefault());
+
+            //System.out.println(localDateAujd.toString());
+            //System.out.println(localDateEcheance.toString());
+
+            // Calculer le nombre de jours entre les deux dates
+            long joursEntre = ChronoUnit.DAYS.between(localDateAujd, localDateEcheance);
+            return (int) joursEntre; // Convertir en int, car nous voulons un nombre entier de jours
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0; // En cas d'erreur de parsing
+        }
     }
 
 

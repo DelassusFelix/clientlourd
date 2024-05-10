@@ -32,6 +32,26 @@ public class PersistanceSQL {
         }
     }*/
 
+    public void updateMateriel(int numSerie, int numContrat) throws SQLException {
+        // Correction de la requête SQL
+        String updateQuery = "UPDATE materiel SET num_contrat = ? WHERE num_serie = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+            // Définition des valeurs des paramètres
+            statement.setInt(1, numContrat); // Pour num_contrat
+            statement.setInt(2, numSerie);   // Pour num_serie
+
+            // Exécute la requête de mise à jour
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Mise à jour réussie!");
+            } else {
+                System.out.println("Aucune ligne mise à jour.");
+            }
+        }
+    }
+
     public Object ChargerDepuisBase(String id, String nomClasse) {
         String nomTable = "";
         String clePrimaire = "";
@@ -233,5 +253,18 @@ public class PersistanceSQL {
         return users;
     }
 
+    public ArrayList<Client> getClients() throws SQLException {
 
+        ArrayList<Client> lesClients = new ArrayList<>();
+
+        Statement statement = connection.createStatement();
+        String query = "SELECT * FROM client ORDER BY num_client ASC";
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()){
+           Client leClient = (Client) ChargerDepuisBase(resultSet.getInt("num_client"),"Client");
+           lesClients.add(leClient);
+        }
+        return lesClients;
+    }
 }

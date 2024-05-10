@@ -116,7 +116,11 @@ public class Client {
     }
 
     public boolean estAssure() {
-        return leContrat.estValide();
+        if (leContrat != null){
+            return leContrat.estValide();
+        } else {
+            return false;
+        }
     }
 
     public ArrayList<Materiel> getMaterielsSousContrat() {

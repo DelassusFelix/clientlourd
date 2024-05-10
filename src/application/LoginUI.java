@@ -62,8 +62,13 @@ class LoginUI extends JFrame {
 
         if (authenticate(username, password)) {
             // Authentification réussie
-            InterfaceGraphique app = new InterfaceGraphique();
-            app.setVisible(true);
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    new InterfaceGraphique().setVisible(true);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             dispose();
         } else {
             // Authentification échouée

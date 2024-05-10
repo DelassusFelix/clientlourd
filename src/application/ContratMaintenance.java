@@ -60,7 +60,7 @@ public class ContratMaintenance {
 
 
     public boolean estValide() {
-        if (dateEcheance.compareTo(dateSignature) >= 0) {
+        if (this != null && dateEcheance.compareTo(dateSignature) >= 0) {
             return true;
         }
         else {
@@ -99,14 +99,18 @@ public class ContratMaintenance {
     }
 
 
-    public void ajouteMateriel(Materiel unMateriel) {
+    /*public void ajouteMateriel(Materiel unMateriel) {
         // Comparer la date de signature avec la date d'installation du matériel
-        if (dateSignature.before(unMateriel.getDateInstallation())) {
+        if (dateSignature.before(unMateriel.getDateInstallation()) || dateSignature.equals(unMateriel.getDateInstallation())) {
             lesMaterielsAssures.add(unMateriel);
             System.out.println("Matériel ajouté : " + unMateriel.getNumSerie());
         } else {
             System.out.println("Matériel non ajouté. La date de signature doit être antérieure à la date d'installation.");
         }
+    }*/
+
+    public void ajouteMateriel(Materiel unMateriel) {
+            lesMaterielsAssures.add(unMateriel);
     }
 
 }

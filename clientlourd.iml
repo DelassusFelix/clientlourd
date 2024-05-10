@@ -9,5 +9,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="mysql-connector-j-8.3.0" level="project" />
     <orderEntry type="library" name="mindrot.jbcrypt" level="project" />
+    <orderEntry type="library" name="itextpdf.kernel" level="project" />
+    <orderEntry type="library" name="itextpdf.layout" level="project" />
+    <orderEntry type="library" name="ch.qos.logback.classic" level="project" />
+    <orderEntry type="library" name="slf4j.integration" level="project" />
   </component>
 </module>

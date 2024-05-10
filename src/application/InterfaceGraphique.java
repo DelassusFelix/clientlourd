@@ -7,6 +7,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -230,9 +231,19 @@ public class InterfaceGraphique extends JFrame {
         return checkedItems; // Retournez la liste des cases cochées
     }
 
-    public void createPdfRelance(Client leClient) {
+    public void createPdfRelance() throws IOException, SQLException {
+        File folder = new File("stockPdfRelance");
+        FolderCleaner.clearFolder(folder);
+
+        ArrayList<Client> allClients = donnees.getClients();
         Fichier fichier = new Fichier();
-        fichier.generePdf(leClient);
+        for (Client unClient : allClients) {
+            System.out.println(unClient.getLeContrat().getJoursRestants());
+            if(unClient.getLeContrat() != null && unClient.getLeContrat().getJoursRestants() <= 31){
+                fichier.generePdf(unClient);
+            }
+        }
+
     }
 
     public static void main(String[] args) {

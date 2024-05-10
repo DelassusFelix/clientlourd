@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -64,8 +65,12 @@ class LoginUI extends JFrame {
             // Authentification réussie
             SwingUtilities.invokeLater(() -> {
                 try {
-                    new InterfaceGraphique().setVisible(true);
+                    InterfaceGraphique clientLourd = new InterfaceGraphique();
+                    clientLourd.createPdfRelance();
+                    clientLourd.setVisible(true);
                 } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             });

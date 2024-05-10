@@ -9,6 +9,7 @@ public class Main {
 
         LoginUI interfaceConnexion = new LoginUI();
         interfaceConnexion.setVisible(true);
+
     }
 
 

@@ -238,7 +238,6 @@ public class InterfaceGraphique extends JFrame {
         ArrayList<Client> allClients = donnees.getClients();
         Fichier fichier = new Fichier();
         for (Client unClient : allClients) {
-            System.out.println(unClient.getLeContrat().getJoursRestants());
             if(unClient.getLeContrat() != null && unClient.getLeContrat().getJoursRestants() <= 31){
                 fichier.generePdf(unClient);
             }

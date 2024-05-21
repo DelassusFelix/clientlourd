@@ -18,22 +18,70 @@ public class PersistanceSQL {
         }
     }
 
-    /*public void RangerDansBase(Object unObjet) {
-        // Implémentez ici la logique pour stocker l'objet dans la base de données
-        try {
-            // Exemple : insérer des données dans une table (ajuster selon votre schéma)
-            Statement statement = connection.prepareStatement("INSERT INTO table (champ1, champ2) VALUES (?, ?)");
-            // Définissez les valeurs à partir des propriétés de l'objet
-            statement.setString(1, "valeur1");
-            statement.setString(2, "valeur2");
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors du stockage dans la base de données", e);
+    public void RangerDansBase(Object unObjet) throws SQLException {
+        switch(String.valueOf(unObjet.getClass())) {
+            case "Famille" -> {
+                String insertQuery = "INSERT INTO famille(id, libelle) VALUES (?, ?)";
+                Famille laFamille = (Famille) unObjet;
+                try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+                    // Définition des valeurs des paramètres
+                    statement.setString(1, laFamille.getCodeFamille());
+                    statement.setString(2, laFamille.getLibelleFamille());
+                    statement.executeUpdate();
+                }
+            }
+
+            case "TypeMateriel" -> {
+                String insertQuery = "INSERT INTO type(ref_interne, libelle, famille) VALUES (?, ?, ?)";
+                TypeMateriel leType = (TypeMateriel) unObjet;
+                try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+                    // Définition des valeurs des paramètres
+                    statement.setString(1, leType.getReferenceInterne());
+                    statement.setString(2, leType.getLibelleTypeMateriel());
+                    statement.setString(3, leType.getLaFamille().getCodeFamille());
+                    statement.executeUpdate();
+                }
+            }
+/*
+            case "Client" -> {
+                Client leClient = (Client) unObjet;
+                int numContrat = 0;
+                if(leClient.getLeContrat() != null) {
+                    numContrat = leClient.getLeContrat().getNumContrat();
+                }
+
+                String insertClientQuery = "INSERT INTO client(num_client, raison_sociale, num_siren, code_ape, adresse, num_tel, dist_agence_km, duree_moy_deplacement, num_agence) VALUES (?, ?, ?)";
+                String insertContratQuery = "INSERT INTO contrat_maintenance(num_contrat, date_1ere_sign, date_signature, date_echeance, num_client) VALUES (?, ?, ?, ?, ?)";
+                String insertMaterielsQuery = "INSERT INTO materiel(ref_interne, libelle, famille) VALUES (?, ?, ?)";
+                TypeMateriel leType = (TypeMateriel) unObjet;
+
+                for(Materiel leMateriel : leClient.getLesMateriels()) {
+                    try (PreparedStatement statement = connection.prepareStatement(insertContratQuery)) {
+                        // Définition des valeurs des paramètres
+                        statement.setString(1, );
+                        statement.setString(2, );
+                        statement.executeUpdate();
+                    }
+                }
+
+                try (PreparedStatement statement = connection.prepareStatement(insertContratQuery)) {
+                    // Définition des valeurs des paramètres
+                    statement.setString(1, );
+                    statement.setString(2, );
+                    statement.executeUpdate();
+                }
+
+                try (PreparedStatement statement = connection.prepareStatement(insertClientQuery)) {
+                    // Définition des valeurs des paramètres
+                    statement.setString(1, );
+                    statement.setString(2, );
+                    statement.executeUpdate();
+                }
+            }*/
         }
-    }*/
+    }
 
     public void updateMateriel(int numSerie, int numContrat) throws SQLException {
-        // Correction de la requête SQL
         String updateQuery = "UPDATE materiel SET num_contrat = ? WHERE num_serie = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
@@ -102,7 +150,6 @@ public class PersistanceSQL {
                     TypeMateriel leType = new TypeMateriel(referenceInterne, libelleType, laFamille);
                     return leType;
                  }
-
 
                 else {
                     return null;
